@@ -6,53 +6,6 @@ StonkFun is a permissionless token launchpad on Solana built around one defining
 
 The same launch mechanics and non-custodial guarantees apply regardless of what's on the other side of the pair — though the quote asset chosen directly determines the token's price behavior, since its value is permanently denominated in that asset.
 
-## Architecture
-
-StonkFun does not deploy a smart contract.
-
-Every pool, curve and trade runs on Raydium's programs. Every token is an ordinary Solana mint: classic SPL for Standard launches, Token-2022 for Reward launches, where the tax is Token-2022's own transfer-fee extension rather than anything StonkFun wrote. There is no StonkFun program to audit, and no StonkFun program that can be paused or upgraded out from under a token that already exists.
-
-What StonkFun operates is three things.
-
-### 1. An identity on Raydium
-
-StonkFun's presence on-chain is a small set of accounts baked into the pools it creates. Raydium's program reads them and routes the platform's cut accordingly.
-
-| Account | Address |
-|---|---|
-| LaunchLab program | `LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj` |
-| LaunchLab global config | `B7ctMMdGvy46Am56myTtzfkNzt9kWZVTNGM2BWrJ9adg` |
-| Platform id — Standard | `4E876qZTE9FJMrBzgVtBrSrzz2TLivB5Y5QXPjB4gZL7` |
-| Platform id — Reward | `6BwHHDg3u1854jC8PDLXvR4spTcLNaoBxLJNGC4nTESt` |
-| Curve rule — Standard | `QYZp1YzqEHU67ngXphF9LAkxkxWGvpWEv3rXh4yDbWA` |
-| Curve rule — Reward | `7MNLMFMmFVhN9Z3sj51QZso28oD2Ta3zDPwNAmfrs2vk` |
-| Transfer-tax withdraw authority | `5KXDF6QnqhBj72hDtJNkkpFaQVUfbFXNybMsp3DiK6tD` |
-
-The platform id is the membership test. It is what Raydium charges the platform fee to, and it is what StonkFun looks for when it scans the chain. Nothing else registers a token as a StonkFun launch — which is why a pool you build yourself, with that id baked in, becomes a StonkFun launch without asking anyone.
-
-The last row is the one that carries real power. A single wallet holds the authority to withdraw withheld transfer tax from every Reward mint on the platform. Raydium assigns it at mint creation, and it cannot be changed afterward.
-
-### 2. Off-chain automation
-
-Most of the working system is here, not on-chain.
-
-- **A pool scanner.** Every minute it reads the pools attributed to StonkFun's platform ids and adopts any it has no record of. An adopted launch is indistinguishable from one created through the API: token page, chart, volume, fee ledger, holder rewards.
-- **The rewards bot.** Signing as the withdraw authority above, it harvests accrued transfer tax from Reward mints, sells it on the open market for the token's quote asset, and pays the proceeds out to holders in batches. It runs across every Reward token at once, continuously.
-- **Buyback and burn bots.** They convert fee revenue into $STONK buybacks, and separately into burns of the platform's top tokens.
-- **A pricing service.** It converts quote assets to USD so a launch can be sized and displayed. This is the most fragile piece: it works per quote asset, and when it cannot price one, launches against that asset fail while every other asset keeps working.
-
-### 3. A public interface
-
-A REST API at `https://www.stonkfun.xyz/api/public/v1` with no authentication and per-IP rate limits, the site itself, and Arweave for permanent token metadata and images.
-
-### What this means in practice
-
-Two things follow from the shape above.
-
-Your token does not depend on StonkFun. The mint, the pool, the liquidity and the fee accounts are all Raydium and Solana primitives. If StonkFun went offline tomorrow, the token would keep trading and fees would keep accruing.
-
-Rewards and pricing do. Payouts happen because a wallet StonkFun controls harvests and distributes them; a launch can be priced because a service StonkFun runs quotes the quote asset. Neither is trustless, and both are worth understanding before choosing Reward mode.
-
 ## How a launch works
 
 **1. Choose what the token is priced against, and how it pays.**
@@ -78,7 +31,7 @@ This step is where launches fail. If the pricing service cannot value the quote 
 
 **3. The creator signs.**
 
-On the paid Raydium path, StonkFun's API builds the transaction and the creator signs a fee payment from their own wallet. On LaunchLab there is no platform fee, and the creator can skip StonkFun's API entirely and build the instruction against Raydium's program directly — appending the curve-rule account and the platform id from the table above.
+On the paid Raydium path, StonkFun's API builds the transaction and the creator signs a fee payment from their own wallet. On LaunchLab there is no platform fee, and the creator can skip StonkFun's API entirely and build the instruction against Raydium's LaunchLab program directly, baking StonkFun's platform id into the pool. That id is the whole membership test: nothing else registers a token as a StonkFun launch.
 
 There is no account, no API key and no signup anywhere in this. The platform never holds or signs with a key on anyone's behalf.
 
@@ -88,7 +41,7 @@ A dev buy of up to 50% of supply is submitted in the same atomic Jito bundle as 
 
 **5. The launch is adopted, and fees start flowing.**
 
-If it came through the API it is already on record. If it was built independently, the scanner picks it up within a minute or two. From there, every trade pays a fee, and those fees fund what follows.
+If it came through the API it is already on record. If it was built independently, StonkFun reads the chain every minute for pools carrying its platform id and adopts it within a minute or two. An adopted launch is indistinguishable from one created through the API: token page, chart, volume, fee ledger, holder rewards. From there, every trade pays a fee, and those fees fund what follows.
 
 ## By the numbers
 
@@ -159,7 +112,7 @@ Platform trading-fee revenue funds two independent burn mechanisms, not one:
 
 $STONK itself was launched through StonkFun's own standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
 
-Reward-token payouts are funded by a third source again: the transfer tax itself, not trading-fee revenue. The harvest, sale and distribution are handled by the rewards bot described under [Off-chain automation](#2-off-chain-automation).
+Reward-token payouts are funded by a third source again: the transfer tax itself, not trading-fee revenue. A single wallet operated by StonkFun holds the authority to withdraw accrued tax from every Reward mint on the platform; it harvests, sells into the quote asset, and batches the proceeds out to holders.
 
 ## What StonkFun is not
 
