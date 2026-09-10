@@ -76,7 +76,7 @@ The list is spread across various categories:
 
 Clearing curation isn't the whole story — a pair has to clear three separate requirements before a launch against it will actually go through.
 
-**First, the asset needs real liquidity on Raydium.** A quote asset with no meaningful Raydium liquidity can't be priced or reliably traded against, so this comes before anything else is even considered.
+**First, the asset needs at least $50,000 in liquidity seeded on Raydium.** Below that threshold, a quote asset isn't eligible to be added to the list — a market that thin can't be priced or reliably traded against, so this comes before anything else is even considered. This figure was confirmed directly by the StonkFun team; it isn't published in the public API or on the site.
 
 **Second, it has to be approved.** This is what being on the list means in practice, and the API reports it directly as `launchable`. A retired asset reports `launchable: false` permanently. The criteria behind that decision aren't published — being on the list is the practical signal that an asset has cleared the bar.
 
