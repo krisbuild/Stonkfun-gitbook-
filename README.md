@@ -59,7 +59,7 @@ Before building a launch, the API's own guidance is to call `/pairs` first: `quo
 
 ### The nine categories
 
-Based on a snapshot of the live `/pairs` response (453 quote assets, September 2026):
+A snapshot of the `/pairs` endpoint, taken September 2026 — 453 quote assets across nine categories:
 
 | Category | Label shown | Count | Share | Examples |
 |---|---|---|---|---|
@@ -75,7 +75,7 @@ Based on a snapshot of the live `/pairs` response (453 quote assets, September 2
 
 *Counts and shares are a point-in-time snapshot — the breakdown shifts as the list grows, so don't treat these as fixed.*
 
-Two things worth noticing in the raw data: the category id and its display label don't always match — the API returns `backpack` as the raw category, but the site shows "Sunrise" — and some symbols exist twice under different statuses: OPENAI and KALSHI each have a live entry under `prestock` and a retired one under `tessera`, evidence StonkFun has consolidated categories over time rather than keeping every one live forever.
+Two details stand out. The category id and its display label don't always match: the API returns `backpack` as the raw category, but the site shows "Sunrise." And some symbols exist twice under different statuses — OPENAI and KALSHI each have a live entry under `prestock` and a retired one under `tessera`, showing StonkFun has consolidated categories over time rather than keeping every one live indefinitely.
 
 ### The two gates a pair has to clear
 
