@@ -72,9 +72,15 @@ The list is spread across various categories:
 | `solana` | Solana | SOL (Wrapped), SKR |
 | `collectible` | Collectibles | SV151, HEEBOO |
 
-### The two gates a pair has to clear
+### What it takes for a pair to be usable
 
-Two independent flags, and both have to be true for a launch to actually work. **`launchable`** is StonkFun's own rule — a retired pair reports `false` here permanently. **`launchLabReady`** is whether Raydium itself has created the on-chain `GlobalConfig` a LaunchLab launch needs against that asset. A pair can be approved by StonkFun and still not be LaunchLab-ready; constructing a launch against one of those fails on-chain, not at the API layer. Three `custom`-category pairs in the same snapshot (PENGUIN, PUMPCADE, BURNIE) were caught exactly in that gap.
+A quote asset clearing StonkFun's curation isn't the whole story — a pair has to clear two separate requirements before a launch against it will actually go through.
+
+**First, StonkFun has to have approved it.** This is what being on the list means in practice, and the API reports it directly as `launchable`. An asset StonkFun has retired reports `launchable: false` permanently. StonkFun doesn't publish the internal criteria it uses to decide what gets approved — being on the list is the practical signal that an asset has cleared that bar.
+
+**Second, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** StonkFun's approval doesn't create this by itself — Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist, independent of anything StonkFun decides. The API reports this as `launchLabReady`.
+
+A pair can clear the first requirement without the second: StonkFun says yes, but Raydium hasn't provisioned it yet. In one snapshot, three approved pairs — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed and approved, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
 
 ### Symbols collide — match by mint address
 
