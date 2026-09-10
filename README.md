@@ -53,9 +53,9 @@ A quote asset is what a new token is priced against — the other side of the pa
 
 ### The list is curated
 
-New quote assets are added by the StonkFun team, and the list keeps growing. There's currently no way to add one yourself — before building a launch, the API's own guidance is to call `/pairs` first: `quoteMint` must be one of the assets it returns.
+New quote assets are vetted and added to the approved list by StonkFun. Subsequently, users will be able to add their own custom quote asset by burning $STONK.
 
-A self-service path is coming: users will be able to add their own custom quote asset by burning $STONK.
+Before building a launch, the API's own guidance is to call `/pairs` first: `quoteMint` must be one of the assets it returns.
 
 ### The nine categories
 
