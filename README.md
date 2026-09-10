@@ -68,12 +68,9 @@ The list is spread across various categories:
 | `backpack` | **Sunrise** | MU (Micron), TTWO (Take-Two), SNDK (SanDisk), NBIS, SILVER |
 | `prestock` | PreStock | ANTHROPIC, ANDURIL, NEURALINK, POLYMARKET, FIGUREAI, OPENAI, KALSHI |
 | `currency` | Currency | USDC, USDT, EURC, ONYC, JLUSDC |
-| `tessera` | Tessera | OPENAI, KALSHI |
 | `leverage` | Leverage | xSOL, XBTC |
 | `solana` | Solana | SOL (Wrapped), SKR |
 | `collectible` | Collectibles | SV151, HEEBOO |
-
-Two details stand out. The category id and its display label don't always match: the API returns `backpack` as the raw category, but the site shows "Sunrise." And some symbols exist twice under different statuses — OPENAI and KALSHI each have a live entry under `prestock` and a retired one under `tessera`, showing StonkFun has consolidated categories over time rather than keeping every one live indefinitely.
 
 ### The two gates a pair has to clear
 
