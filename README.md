@@ -82,6 +82,8 @@ Clearing curation isn't the whole story — a pair has to clear two separate req
 
 A pair can clear the liquidity bar and still not be usable on LaunchLab: liquid enough, but not yet provisioned on Raydium's side. In one snapshot, three pairs on the list — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
 
+Worth keeping the two straight, since they're checked by different systems entirely. **`launchable`** is StonkFun's own field — whether StonkFun currently lists a pair as usable at all. **`launchLabReady`** is Raydium's — whether Raydium's on-chain `GlobalConfig` for that quote asset actually exists. A pair can be `true` on one and `false` on the other; they're independent checks run by two different systems, not two readings of the same thing.
+
 ### Symbols collide — match by mint address
 
 Roughly 1 in 9 pairs shares its ticker symbol with at least one other — two different tokens both trade as `ALON`, `xBTC` and `WBTC` both describe wrapped Bitcoin from different bridges. Never resolve a quote asset by symbol; always use the mint address, or an integration will occasionally pick the wrong token.
