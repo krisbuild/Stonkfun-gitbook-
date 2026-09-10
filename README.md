@@ -51,9 +51,13 @@ The pool goes live and every trade pays a fee from that point on.
 
 A quote asset is what a new token is priced against — the other side of the pair, which can be almost anything, not just SOL.
 
-### The list is curated, not open
+### The list is curated, not open — for now
 
-There is no way to add a quote asset yourself. Every asset on the list was added by StonkFun; a token you hold has no path onto the list just because you want to launch against it. The list isn't fixed — new assets are added on an ongoing basis — but growth only ever comes from StonkFun's side. Before building a launch, the API's own guidance is to call `/pairs` first: `quoteMint` must be one of the assets it returns.
+Today, there is no way to add a quote asset yourself. Every asset on the list was added by StonkFun; a token you hold has no path onto the list just because you want to launch against it. The list isn't fixed — new assets are added on an ongoing basis — but growth only ever comes from StonkFun's side. Before building a launch, the API's own guidance is to call `/pairs` first: `quoteMint` must be one of the assets it returns.
+
+{% hint style="info" %}
+The team has confirmed they're building a self-service path: a way for users to add their own custom quote asset by burning $STONK. It hasn't shipped yet, so treat this as a stated direction rather than a current capability — this page will update once it's live.
+{% endhint %}
 
 ### The nine categories
 
