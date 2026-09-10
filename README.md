@@ -74,13 +74,13 @@ The list is spread across various categories:
 
 ### What it takes for a pair to be usable
 
-A quote asset clearing StonkFun's curation isn't the whole story — a pair has to clear two separate requirements before a launch against it will actually go through.
+Clearing curation isn't the whole story — a pair has to clear two separate requirements before a launch against it will actually go through.
 
-**First, StonkFun has to have approved it.** This is what being on the list means in practice, and the API reports it directly as `launchable`. An asset StonkFun has retired reports `launchable: false` permanently. StonkFun doesn't publish the internal criteria it uses to decide what gets approved — being on the list is the practical signal that an asset has cleared that bar.
+**First, it has to be approved.** This is what being on the list means in practice, and the API reports it directly as `launchable`. A retired asset reports `launchable: false` permanently. The criteria behind that decision aren't published — being on the list is the practical signal that an asset has cleared the bar.
 
-**Second, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** StonkFun's approval doesn't create this by itself — Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist, independent of anything StonkFun decides. The API reports this as `launchLabReady`.
+**Second, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Approval alone doesn't create this — Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist, independent of the approval decision itself. The API reports this as `launchLabReady`.
 
-A pair can clear the first requirement without the second: StonkFun says yes, but Raydium hasn't provisioned it yet. In one snapshot, three approved pairs — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed and approved, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
+A pair can clear the first requirement without the second: approved, but not yet provisioned on Raydium's side. In one snapshot, three approved pairs — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed and approved, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
 
 ### Symbols collide — match by mint address
 
