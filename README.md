@@ -6,42 +6,34 @@ StonkFun is a permissionless token launchpad on Solana built around one defining
 
 The same launch mechanics and non-custodial guarantees apply regardless of what's on the other side of the pair — though the quote asset chosen directly determines the token's price behavior, since its value is permanently denominated in that asset.
 
-## How a launch works
+## How launches work
 
-**1. Choose what the token is priced against, and how it pays.**
+Creating a launch mints the token and sizes its curve in the same flow, priced against whatever quote asset the creator picks — not just SOL. The creator sets the name, symbol, image, description and links at creation, and chooses a launch mode at the same time: **Standard**, which carries no tax and pays the creator a share of trading fees, or **Reward**, a Token-2022 mint with a permanent 1% or 3% transfer tax and no creator fee position. Both the quote asset and the mode are locked in at creation — neither can be changed afterward.
 
-The quote asset comes from StonkFun's approved list of 450+ tokens. StonkFun controls that list; there is no way to add one yourself. The mode — Standard or Reward — is chosen at the same time and is permanent.
+***
 
-**2. The curve gets sized in the quote asset.**
+**01 Choose**
+Pick a quote asset from StonkFun's list of 450+ approved tokens, and a launch mode. Both are permanent.
 
-Solana launchpads normally size a raise in SOL. StonkFun cannot, because the quote asset is arbitrary, so it converts: it looks up the quote asset's USD price and works out the amount that makes this launch worth the same as the platform's default 85 SOL raise.
+**02 Price**
+The curve is sized in the quote asset itself, using its live USD price, so the launch is worth the same regardless of what it's priced against.
 
-A real quote, taken against SPYX (tokenized S&P 500) at $768.39:
+**03 Sign**
+The creator signs a single fee payment from their own wallet. No account, no API key, nothing held in custody.
 
-| | |
-|---|---|
-| Raise | 11.4455166 SPYX |
-| Starting market cap | $2,893 |
-| Graduation market cap | $42,507 at the quoted price |
-| Multiple to graduation | 14.7x |
-| Supply | 1,000,000,000 (793,100,000 sold on the curve) |
-| Curve | `ConstantCurve`, migrating to a Raydium CPMM pool |
+**04 Bundle**
+The creator's opening buy, if any, is submitted in the same atomic transaction that makes the pool tradeable — it fills or the whole launch fails, with nothing charged either way.
 
-This step is where launches fail. If the pricing service cannot value the quote asset, or the asset's supply is so large that the derived raise overflows, the launch is rejected before anything is signed. That is a property of the quote asset, not of the token being launched.
+**05 Trade**
+The pool goes live and every trade pays a fee from that point on.
 
-**3. The creator signs.**
+***
 
-On the paid Raydium path, StonkFun's API builds the transaction and the creator signs a fee payment from their own wallet. On LaunchLab there is no platform fee, and the creator can skip StonkFun's API entirely and build the instruction against Raydium's LaunchLab program directly, baking StonkFun's platform id into the pool. That id is the whole membership test: nothing else registers a token as a StonkFun launch.
+Each launch draws from a fixed list of quote assets, allows a dev buy of up to 50% of supply, and — if used — freezes any airdrop snapshot (also capped at 50% of supply, 1.5% per wallet) before the mint even exists.
 
-There is no account, no API key and no signup anywhere in this. The platform never holds or signs with a key on anyone's behalf.
-
-**4. The opening buy lands in the same bundle.**
-
-A dev buy of up to 50% of supply is submitted in the same atomic Jito bundle as the transaction that makes the pool tradeable. Either the pool opens with the buy already filled, or the whole launch fails and nothing is charged. An airdrop snapshot, if used, is frozen before the mint exists — up to 50% of supply, weighted by holding and capped at 1.5% per wallet — so nobody can see a new token coming and buy in to qualify.
-
-**5. The launch is adopted, and fees start flowing.**
-
-If it came through the API it is already on record. If it was built independently, StonkFun reads the chain every minute for pools carrying its platform id and adopts it within a minute or two. An adopted launch is indistinguishable from one created through the API: token page, chart, volume, fee ledger, holder rewards. From there, every trade pays a fee, and those fees fund what follows.
+{% hint style="info" %}
+**Launch protection.** The opening buy and pool creation are one atomic transaction, so there's no window between them for a bot to buy in ahead of the creator. And because the curve is priced from the quote asset's live rate, an asset the pricing service can't currently value will fail the launch before anything is signed — rather than launch at a wrong price.
+{% endhint %}
 
 ## By the numbers
 
