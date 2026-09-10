@@ -92,7 +92,7 @@ If code looks up a quote asset by its symbol instead of its mint address, it can
 
 ### How pricing works
 
-Every quote asset is priced independently: its own live USD rate, combined with its decimals and total supply, is what sizes a launch's curve. There's no single shared calculation across the list — each quote asset runs through this on its own, which is what lets StonkFun price a launch against anything from a stablecoin to a tokenized stock using the same underlying method.
+Every quote asset is priced independently: its own live USD rate, converted using its own decimals, is what sizes a launch's curve. There's no single shared calculation across the list — each quote asset runs through this on its own, which is what lets StonkFun price a launch against anything from a stablecoin to a tokenized stock using the same underlying method.
 
 ## Launch venues
 
