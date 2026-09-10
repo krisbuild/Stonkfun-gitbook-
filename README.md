@@ -1,19 +1,84 @@
-# Introduction
+# Overview
 
-A launchpad is usually judged on one thing: how fast it gets a new coin trading against SOL. That's the wrong question. The more interesting one is what a coin gets to trade against at all.
-
-StonkFun starts from a different premise — that a new token doesn't have to be priced against SOL to exist. It can be priced against a tokenized stock, a stablecoin, a leveraged asset, an index, or another coin entirely, using the same launch mechanics and the same guarantees, on the same chain.
+A launchpad is usually judged on one thing: how fast it gets a new coin trading against SOL. StonkFun is built on a different premise.
 
 > Every token is priced against another token. Not just SOL.
 
-That one decision shapes everything else about how the protocol is built. Supporting hundreds of quote assets instead of one means solving problems a single-asset launchpad never has to face — pricing curves correctly across wildly different token decimals, keeping non-custodial guarantees intact no matter which venue a launch runs through, and paying holders in a way that holds up at scale instead of quietly decaying. Each of these has a specific, deliberate answer built into the protocol.
+A launch can be paired with a meme, a tokenized stock, a stablecoin, a leveraged asset, an index, or almost anything else already on Solana — using the same launch mechanics and the same non-custodial guarantees regardless of what's on the other side of the pair.
 
-**Three ideas hold it together:**
+## Architecture
 
-**Launch anywhere, look the same everywhere.** A token can launch through a paid Raydium pool, a free bonding curve, or be built independently and adopted automatically after the fact — and it ends up with the same token page, the same fee ledger, and the same holder-reward mechanics regardless of which path it took.
+StonkFun is three things stacked on top of each other:
 
-**Nothing is held, nothing is asked for.** No account. No API key. No signup. A launch is authorized by a wallet signature on a fee payment; a fee claim is authorized by the wallet that owns it. The protocol never custodies a key and never signs on anyone's behalf.
+1. **A launch venue abstraction.** New tokens can launch through a paid Raydium CLMM pool or a free Raydium LaunchLab bonding curve. A third venue, pump.fun, exists in the platform's history but is currently disabled. Every venue is presented identically — one token page, one chart, one fee ledger, one holder-rewards system — regardless of which one ran the launch.
+2. **A curated market for quote assets.** Launches can be paired against any token on StonkFun's own list of 450+ Solana assets. That list is whitelisted by StonkFun, not self-service — see [Quote Assets](how-it-works/quote-assets.md) for what determines inclusion.
+3. **A self-sustaining token economy.** Platform trading-fee revenue funds an automatic buyback-and-burn of $STONK, the platform's own token. A second, independent mechanism — the Ecosystem Flywheel — continuously buys back and burns the platform's own top tokens by market cap, funded separately from reward-token trading fees.
 
-**Rewards that don't decay.** A holder-reward model funded by a share of trading fees erodes as a token grows and can be routed around by a competing pool elsewhere. StonkFun pays holders through a transfer tax instead — a property of the token itself, applied on every transfer, on any venue, that can't be undercut and doesn't depend on a live price oracle to keep working.
+## By the numbers
 
-The [Overview](overview.md) covers the concrete mechanics, numbers, and structure behind each of these.
+| Field | Value |
+|---|---|
+| **Chain** | Solana (mainnet-beta) |
+| **Base API URL** | `https://www.stonkfun.xyz/api/public/v1` |
+| **API key** | None required — every endpoint is open, rate-limited per IP |
+| **Tokens launched** | 29,000+, growing at roughly 6–7 launches per minute |
+| **Quote assets** | 450+ across 9 categories |
+| **Graduation threshold** | $40,000 market cap (configured); tokens are flagged "about to graduate" at $32,000 |
+| **Platform token** | $STONK — fixed supply, mint and freeze authority both permanently revoked |
+
+**Quote asset categories**, by approximate share of the pairs list:
+
+| Category | What it is | Share |
+|---|---|---|
+| Custom | Ordinary memecoins and established Solana tokens | ~85% |
+| xStock | Tokenized public-company stocks | ~5% |
+| Sunrise | A second tokenized-equity category | ~5% |
+| PreStock | Tokenized pre-IPO / private companies | ~1.5% |
+| Currency | Stablecoins and fiat-pegged tokens | ~1% |
+| Leverage, Collectibles, Solana, Tessera | Amplified-exposure tokens, tokenized collectibles, SOL and related core assets, and a second pre-IPO issuer | remainder |
+
+Ordinary memecoins dominate the pairs list. The tokenized-equity categories combined are a small minority of what's actually launchable — the "trade against a stock" framing is a small slice of real usage.
+
+## Launch venues
+
+| | Raydium CLMM | LaunchLab |
+|---|---|---|
+| **Cost** | A flat SOL fee, shown live before signing | Network rent only (~0.012–0.013 SOL) — no platform fee |
+| **Liquidity model** | Locked position from launch | Bonding curve, no upfront liquidity, graduates into a Raydium pool |
+| **Requires StonkFun's API** | Yes | No — a transaction built directly against Raydium's program is adopted automatically within a minute or two |
+| **Fee claiming** | Fee Key NFT + manual claim | Forwarded automatically, nothing to claim |
+
+## Launch modes
+
+Every launch is either **Standard** or **Reward**, independent of which venue it runs through.
+
+**Standard tokens** carry no tax. The creator earns a share of trading fees instead. On LaunchLab, the total trading fee is 1.25% — 0.25% to Raydium's own protocol fee, 1% collected by StonkFun, half of which (0.5%) is forwarded to the creator automatically. On the paid Raydium path, the creator chooses a 1% pool (50/50 split) or a 2% pool (75% to the creator) at launch, permanently.
+
+**Reward tokens** pay holders through a Token-2022 transfer tax — 1% or 3%, fixed permanently at launch — collected on every transfer, on any venue, not just trades on StonkFun. Reward tokens have no creator fee position at all.
+
+The transfer tax model exists because a rewards mechanism funded by a share of trading fees has two structural weaknesses: the fee is attached to a single pool, and a competing pool for the same pair can undercut it elsewhere, routing volume — and the reward stream — away. A transfer tax avoids both, because it's a property of the token's mint rather than any one pool: it applies on every transfer regardless of venue, so there is no cheaper pool to route around it, and no live price oracle is required to apply it.
+
+## Non-custodial design
+
+There is no account, no API key, and no signup anywhere on the platform. A launch is authorized entirely by the creator's own wallet signing a fee payment; the platform never holds or signs with a private key on anyone's behalf. Fee claims work the same way — a claim transaction is only ever valid when signed by the wallet that actually owns it.
+
+This extends to the launch mechanics themselves. A creator's opening buy (up to 50% of supply) is submitted in the same atomic bundle as the transaction that makes the pool tradeable — either the pool opens with the buy already filled, or the whole launch fails and nothing is charged. Airdrops work the same way: the recipient snapshot (up to 50% of supply, weighted by holding and capped at 1.5% per wallet) is frozen before the mint even exists, so nobody can see a new token coming and buy in early to qualify.
+
+## Economics
+
+Platform trading-fee revenue funds two independent burn mechanisms, not one:
+
+- A **buyback-and-burn of $STONK**, historically around 60% of platform revenue, with the remainder retained.
+- The **Ecosystem Flywheel**, funded separately from reward-token trading fees, which continuously buys back and burns the platform's own top 15 tokens by market cap.
+
+$STONK itself was launched through StonkFun's own standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
+
+## What StonkFun is not
+
+StonkFun does not vet, audit, or endorse tokens launched on it. A tokenized-stock pairing does not make a token a stock, a derivative of stock, or an investment product — it only describes what the token trades against. Distributions to reward-token holders are a mechanical property of the token, not a dividend or yield.
+
+## Next
+
+- [How StonkFun Works](how-it-works/README.md) — launch venues, launch modes, fees, and economics in full detail
+- [Getting Started](getting-started/README.md) — launching a first token
+- [FAQ & Troubleshooting](faq/README.md) — common questions and error messages
