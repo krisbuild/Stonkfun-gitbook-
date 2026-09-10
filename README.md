@@ -35,14 +35,14 @@ The pool goes live and every trade pays a fee from that point on.
 
 **A launch that doesn't land doesn't charge.** If the bundle fails to land, the response comes back `service_unavailable` with nothing charged — the creator gets a fresh quote to retry, not a stuck payment. And because that quote is priced from the quote asset's live rate at signing time, an asset the pricing service can't currently value fails the launch before anything is signed, rather than launching at a wrong price.
 
-## By the numbers
+## Platform at a glance
 
 | Field | Value |
 |---|---|
 | **Chain** | Solana (mainnet-beta) |
 | **Base API URL** | `https://www.stonkfun.xyz/api/public/v1` |
 | **API key** | None required — every endpoint is open, rate-limited per IP |
-| **Tokens launched** | 29,000+, growing at roughly 6–7 launches per minute |
+| **Tokens launched** | Growing continuously, around the clock |
 | **Quote assets** | An ever-growing curated list, spanning 9 categories |
 | **Graduation threshold** | $40,000 market cap (configured); tokens are flagged "about to graduate" at $32,000 |
 | **Platform token** | $STONK — fixed supply, mint and freeze authority both permanently revoked |
@@ -57,6 +57,8 @@ The pool goes live and every trade pays a fee from that point on.
 | PreStock | Tokenized pre-IPO / private companies | ~1.5% |
 | Currency | Stablecoins and fiat-pegged tokens | ~1% |
 | Leverage, Collectibles, Solana, Tessera | Amplified-exposure tokens, tokenized collectibles, SOL and related core assets, and a second pre-IPO issuer | remainder |
+
+*Shares are a point-in-time snapshot, not a fixed split — they shift as the approved list grows.*
 
 Ordinary memecoins dominate the pairs list. The tokenized-equity categories combined are a small minority of what's actually launchable — the "trade against a stock" framing is a small slice of real usage.
 
