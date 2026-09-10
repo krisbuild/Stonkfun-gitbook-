@@ -4,7 +4,7 @@ StonkFun is a permissionless token launchpad on Solana built around one defining
 
 > Any token, paired against anything — a stock, a currency, a meme, or any other token.
 
-The same launch mechanics and the same non-custodial guarantees apply regardless of what's on the other side of the pair.
+The same launch mechanics and non-custodial guarantees apply regardless of what's on the other side of the pair — though the quote asset chosen directly determines the token's price behavior, since its value is permanently denominated in that asset.
 
 ## Architecture
 
