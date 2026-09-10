@@ -86,7 +86,11 @@ A pair can clear the first two and still not be usable on LaunchLab: approved an
 
 ### Symbols collide — match by mint address
 
-Roughly 1 in 9 pairs shares its ticker symbol with at least one other — two different tokens both trade as `ALON`, `xBTC` and `WBTC` both describe wrapped Bitcoin from different bridges. Never resolve a quote asset by symbol; always use the mint address, or an integration will occasionally pick the wrong token.
+A ticker symbol (`SOL`, `ALON`, `USDC`) is just a label — nothing stops two different tokens from picking the same one. A mint address is the actual identifier: a long, unique string that can never collide.
+
+Roughly 1 in 9 pairs on the list shares its symbol with at least one other pair. Two different tokens both trade as `ALON`. Separately, `xBTC` and `WBTC` both represent wrapped Bitcoin, just from different bridges — same idea, different tokens.
+
+If code looks up a quote asset by its symbol instead of its mint address, it can silently grab the wrong one — no error, just the wrong token used. Always identify a quote asset by its mint address. The symbol is fine to show a person; it's the wrong thing for code to match on.
 
 ### Where pricing actually breaks
 
