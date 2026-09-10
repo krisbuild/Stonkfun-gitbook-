@@ -74,13 +74,15 @@ The list is spread across various categories:
 
 ### What it takes for a pair to be usable
 
-Clearing curation isn't the whole story — a pair has to clear two separate requirements before a launch against it will actually go through.
+Clearing curation isn't the whole story — a pair has to clear three separate requirements before a launch against it will actually go through.
 
-**First, it has to be approved.** This is what being on the list means in practice, and the API reports it directly as `launchable`. A retired asset reports `launchable: false` permanently. The criteria behind that decision aren't published — being on the list is the practical signal that an asset has cleared the bar.
+**First, the asset needs real liquidity on Raydium.** A quote asset with no meaningful Raydium liquidity can't be priced or reliably traded against, so this comes before anything else is even considered.
 
-**Second, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Approval alone doesn't create this — Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist, independent of the approval decision itself. The API reports this as `launchLabReady`.
+**Second, it has to be approved.** This is what being on the list means in practice, and the API reports it directly as `launchable`. A retired asset reports `launchable: false` permanently. The criteria behind that decision aren't published — being on the list is the practical signal that an asset has cleared the bar.
 
-A pair can clear the first requirement without the second: approved, but not yet provisioned on Raydium's side. In one snapshot, three approved pairs — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed and approved, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
+**Third, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Approval alone doesn't create this — Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist, independent of the approval decision itself. The API reports this as `launchLabReady`.
+
+A pair can clear approval without clearing provisioning: approved, but not yet ready on Raydium's side for LaunchLab specifically. In one snapshot, three approved pairs — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed and approved, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
 
 ### Symbols collide — match by mint address
 
