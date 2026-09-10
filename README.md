@@ -21,7 +21,7 @@ The curve is sized in the quote asset itself, using its live USD price, so the l
 **03 Sign**
 The creator signs a single fee payment from their own wallet. No account, no API key, nothing held in custody.
 
-**04 Bundle**
+**04 Land**
 The creator's opening buy, if any, is submitted as part of the same atomic Jito bundle as the payment, mint, pool and liquidity — everything lands together in a single block, or the whole launch fails with nothing charged.
 
 **05 Trade**
