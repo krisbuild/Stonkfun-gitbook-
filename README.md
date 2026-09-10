@@ -74,15 +74,15 @@ The list is spread across various categories:
 
 ### What it takes for a pair to be usable
 
-Clearing curation isn't the whole story — a pair has to clear two separate requirements before a launch against it will actually go through.
+Clearing curation isn't the whole story — a pair has to clear three separate requirements before a launch against it will actually go through.
 
 **First, the asset needs at least $50,000 in liquidity seeded on Raydium.** Below that threshold, a quote asset isn't eligible to be added to the list — a market that thin can't be priced or reliably traded against, so this comes before anything else is even considered.
 
-**Second, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist. The API reports this as `launchLabReady`.
+**Second, the team has to approve it.** A pair doesn't get added just by clearing the liquidity bar — it has to be reviewed and whitelisted by StonkFun.
 
-A pair can clear the liquidity bar and still not be usable on LaunchLab: liquid enough, but not yet provisioned on Raydium's side. In one snapshot, three pairs on the list — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
+**Third, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist. The API reports this as `launchLabReady`.
 
-Worth keeping the two straight, since they're checked by different systems entirely. **`launchable`** is StonkFun's own field — whether StonkFun currently lists a pair as usable at all. **`launchLabReady`** is Raydium's — whether Raydium's on-chain `GlobalConfig` for that quote asset actually exists. A pair can be `true` on one and `false` on the other; they're independent checks run by two different systems, not two readings of the same thing.
+A pair can clear the first two and still not be usable on LaunchLab: approved and liquid enough, but not yet provisioned on Raydium's side. In one snapshot, three pairs on the list — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
 
 ### Symbols collide — match by mint address
 
