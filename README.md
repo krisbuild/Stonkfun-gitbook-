@@ -8,13 +8,13 @@ The same launch mechanics and non-custodial guarantees apply regardless of what'
 
 ## Architecture
 
-A launch moves through three stages, in this order.
+A launch has three parts.
 
-**1. A quote asset is chosen.** Before anything else, a creator picks a token from StonkFun's own curated list of 450+ Solana assets — whitelisted by StonkFun, with no public process to add to it. Roughly 80% of what's on that list carries a visible provenance tag: already verified on Jupiter's token list, already launched on pump.fun, or already launched on StonkFun itself. This choice isn't cosmetic — it fixes the currency the new token is priced in for the rest of its life, and its own volatility becomes the new token's volatility by construction.
+**1. Pick a quote asset.** The creator chooses what the new token will be priced against, from StonkFun's list of 450+ approved tokens. StonkFun controls this list; there's no way to add a token to it yourself.
 
-**2. The launch executes.** The chosen quote asset then has to survive real curve math. Execution runs through one of two live venues — a paid Raydium CLMM pool, or a free LaunchLab bonding curve — and both have to size themselves correctly against the quote asset's actual decimals and price. This is where stage 1's choice can fail outright: a small number of extreme-supply or oracle-fragile quote assets break this step regardless of which venue is used, independent of anything the creator does right. A launch doesn't need StonkFun's own API to reach this stage, either — a transaction built independently against Raydium's LaunchLab program is detected and adopted automatically within a minute or two, ending up with the same token page, fee ledger, and reward mechanics as one created through the API.
+**2. Launch the token.** The token goes live through one of two systems: a paid Raydium CLMM pool, or a free LaunchLab bonding curve. Both need to calculate the token's starting price correctly using the quote asset from step 1. A small number of quote assets break this calculation — usually ones with an extremely large supply, or no reliable price feed. When that happens, it's a problem with the quote asset, not the launch system.
 
-**3. Trading generates economics.** Every trade through either venue produces fee revenue — covered in full under [Economics](#economics).
+**3. Trades pay fees.** Every trade pays a fee. Those fees fund everything under [Economics](#economics).
 
 ## By the numbers
 
