@@ -76,9 +76,11 @@ The list is spread across various categories:
 
 Clearing curation isn't the whole story — a pair has to clear three separate requirements before a launch against it will actually go through.
 
-**First, the asset needs at least $50,000 in liquidity seeded on Raydium.** Below that threshold, a quote asset isn't eligible to be added to the list — a market that thin can't be priced or reliably traded against, so this comes before anything else is even considered. This figure was confirmed directly by the StonkFun team; it isn't published in the public API or on the site.
+**First, the asset needs at least $50,000 in liquidity seeded on Raydium.** Below that threshold, a quote asset isn't eligible to be added to the list — a market that thin can't be priced or reliably traded against, so this comes before anything else is even considered.
 
-**Second, it has to be approved.** This is what being on the list means in practice, and the API reports it directly as `launchable`. A retired asset reports `launchable: false` permanently. The criteria behind that decision aren't published — being on the list is the practical signal that an asset has cleared the bar.
+**Second, it has to be approved.** Clearing the liquidity bar makes a token *eligible* — it doesn't put it on the list by itself. Plenty of tokens clear $50,000 in Raydium liquidity and are never added. Approval is a separate, deliberate decision: StonkFun choosing that specific token for the list. That decision is exposed in the API as a single field, `launchable`. `true` means it's on the list and usable; `false` means it either never got approved or was approved once and later retired — the Tessera duplicates covered above are an example of the second case, approved at one point and then permanently switched off.
+
+So the sequence runs: eligible (clears the liquidity bar) → chosen (StonkFun approves it) → technically ready (Raydium has provisioned it on-chain, covered next). A token can clear the first and third and still never make the list, because the middle step is a deliberate choice, not an automatic pass.
 
 **Third, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Approval alone doesn't create this — Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist, independent of the approval decision itself. The API reports this as `launchLabReady`.
 
@@ -122,10 +124,6 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 | $100,000 – $125,000 | $250 |
 | $125,000 – ~$50,000,000 | 0.1% of market cap |
 | $50,000,000+ | Capped at $50,000 |
-
-{% hint style="warning" %}
-These thresholds were provided directly by the StonkFun team and are not published in the public API or on the site. They are current as of September 2026; the team has indicated they plan to revise this system, so treat this table as a snapshot rather than a permanent specification.
-{% endhint %}
 
 ## Economics
 
