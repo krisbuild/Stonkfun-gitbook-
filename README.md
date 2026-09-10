@@ -29,9 +29,9 @@ The pool goes live and every trade pays a fee from that point on.
 
 ***
 
-{% hint style="info" %}
-**Launch protection.** The opening buy, mint, pool and liquidity all land in one atomic Jito bundle, so there's no window between them for a bot to buy in ahead of the creator. And because the curve is priced from the quote asset's live rate, an asset the pricing service can't currently value will fail the launch before anything is signed — rather than launch at a wrong price.
-{% endhint %}
+### Launch protection
+
+The opening buy, mint, pool and liquidity all land in one atomic Jito bundle, so there's no window between them for a bot to buy in ahead of the creator. And because the curve is priced from the quote asset's live rate, an asset the pricing service can't currently value will fail the launch before anything is signed — rather than launch at a wrong price.
 
 ## By the numbers
 
