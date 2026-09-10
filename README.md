@@ -82,8 +82,6 @@ Clearing curation isn't the whole story — a pair has to clear three separate r
 
 **Third, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist. The API reports this as `launchLabReady`.
 
-A pair can clear the first two and still not be usable on LaunchLab: approved and liquid enough, but not yet provisioned on Raydium's side. In one snapshot, three pairs on the list — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
-
 ### Symbols collide — match by mint address
 
 A ticker symbol (`SOL`, `ALON`, `USDC`) is just a label — nothing stops two different tokens from picking the same one. A mint address is the actual identifier: a long, unique string that can never collide.
@@ -92,9 +90,9 @@ Roughly 1 in 9 pairs on the list shares its symbol with at least one other pair.
 
 If code looks up a quote asset by its symbol instead of its mint address, it can silently grab the wrong one — no error, just the wrong token used. Always identify a quote asset by its mint address. The symbol is fine to show a person; it's the wrong thing for code to match on.
 
-### Where pricing actually breaks
+### How pricing works
 
-Every quote asset needs a live, reliable USD price to size a launch's curve. Two real failure classes have shown up on the platform: **supply overflow**, where an asset's raw supply is large enough to push the derived raise past what the math can represent, rejecting the launch before anything is signed; and **per-asset pricing outages**, where the pricing service goes down for one specific asset while every other asset on the list keeps working normally. Both are asset-specific, not systemic.
+Every quote asset is priced independently: its own live USD rate, combined with its decimals and total supply, is what sizes a launch's curve. There's no single shared calculation across the list — each quote asset runs through this on its own, which is what lets StonkFun price a launch against anything from a stablecoin to a tokenized stock using the same underlying method.
 
 ## Launch venues
 
