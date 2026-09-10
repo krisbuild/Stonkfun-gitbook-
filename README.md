@@ -1,6 +1,6 @@
 # Overview
 
-A launchpad is usually judged on one thing: how fast it gets a new coin trading against SOL. StonkFun is built on a different premise.
+StonkFun is a permissionless token launchpad on Solana built around one defining idea:
 
 > Every token is priced against another token. Not just SOL.
 
