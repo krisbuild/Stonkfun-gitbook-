@@ -57,9 +57,9 @@ New quote assets are vetted and added to the approved list by StonkFun. Subseque
 
 Before building a launch, the API's own guidance is to call `/pairs` first: `quoteMint` must be one of the assets it returns.
 
-### The nine categories
+### The categories
 
-A snapshot of the `/pairs` endpoint, taken September 2026 — 453 quote assets across nine categories:
+The list is spread across various categories:
 
 | Category | Label shown | Count | Share | Examples |
 |---|---|---|---|---|
