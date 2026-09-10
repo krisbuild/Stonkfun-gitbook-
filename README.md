@@ -1,6 +1,6 @@
 # Introduction
 
-A launchpad is usually judged on one thing: how fast it gets a new coin trading against SOL. That's the wrong question to optimize for. The more interesting one is what a coin gets to trade against at all.
+A launchpad is usually judged on one thing: how fast it gets a new coin trading against SOL. That's the wrong question. The more interesting one is what a coin gets to trade against at all.
 
 StonkFun starts from a different premise — that a new token doesn't have to be priced against SOL to exist. It can be priced against a tokenized stock, a stablecoin, a leveraged asset, an index, or another coin entirely, using the same launch mechanics and the same guarantees, on the same chain.
 
