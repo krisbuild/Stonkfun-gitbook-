@@ -1,4 +1,4 @@
-# About StonkFun
+# Overview
 
 StonkFun is a permissionless token launchpad on Solana built around one defining idea: every token is priced against another token, not just SOL. A launch can be paired with a meme, a tokenized stock, a stablecoin, a leveraged asset, or almost anything else already on Solana.
 

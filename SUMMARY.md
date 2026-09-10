@@ -1,6 +1,6 @@
 # Table of contents
 
-* [About StonkFun](README.md)
+* [Overview](README.md)
 
 ## How StonkFun Works
 
