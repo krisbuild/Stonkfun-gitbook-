@@ -60,6 +60,20 @@ Every launch is either **Standard** or **Reward**, independent of which venue it
 
 The transfer tax model exists because a rewards mechanism funded by a share of trading fees has two structural weaknesses: the fee is attached to a single pool, and a competing pool for the same pair can undercut it elsewhere, routing volume — and the reward stream — away. A transfer tax avoids both, because it's a property of the token's mint rather than any one pool: it applies on every transfer regardless of venue, so there is no cheaper pool to route around it, and no live price oracle is required to apply it.
 
+Tax doesn't distribute on every individual transfer — it accrues into a pot until the pot crosses a threshold, then converts and pays out to holders in a batch. That threshold scales with the token's market cap:
+
+| Market cap | Threshold to trigger a payout |
+|---|---|
+| Under $50,000 | $50 |
+| $50,000 – $100,000 | $200 |
+| $100,000 – $125,000 | $250 |
+| $125,000 – ~$50,000,000 | 0.1% of market cap |
+| $50,000,000+ | Capped at $50,000 |
+
+{% hint style="warning" %}
+These thresholds were provided directly by the StonkFun team and are not published in the public API or on the site. They are current as of September 2026; the team has indicated they plan to revise this system, so treat this table as a snapshot rather than a permanent specification.
+{% endhint %}
+
 ## Non-custodial design
 
 There is no account, no API key, and no signup anywhere on the platform. A launch is authorized entirely by the creator's own wallet signing a fee payment; the platform never holds or signs with a private key on anyone's behalf. Fee claims work the same way — a claim transaction is only ever valid when signed by the wallet that actually owns it.
