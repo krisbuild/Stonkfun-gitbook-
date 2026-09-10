@@ -22,7 +22,7 @@ The curve is sized in the quote asset itself, using its live USD price, so the l
 The creator signs a single fee payment from their own wallet. No account, no API key, nothing held in custody.
 
 **04 Land**
-The creator's opening buy, if any, is submitted as part of the same atomic Jito bundle as the payment, mint, pool and liquidity — everything lands together in a single block, or the whole launch fails with nothing charged. A dev buy can claim up to 50% of supply; an airdrop snapshot, if used, is frozen before the mint even exists, capped the same way — 50% of supply, 1.5% per wallet.
+The creator's opening buy, if any, is submitted as part of the same atomic Jito bundle as the payment, mint, pool and liquidity — everything lands together in a single block, or the whole launch fails with nothing charged.
 
 **05 Trade**
 The pool goes live and every trade pays a fee from that point on.
