@@ -47,20 +47,7 @@ The pool goes live and every trade pays a fee from that point on.
 | **Graduation threshold** | $40,000 market cap (configured); tokens are flagged "about to graduate" at $32,000 |
 | **Platform token** | $STONK — fixed supply, mint and freeze authority both permanently revoked |
 
-**Quote asset categories**, by approximate share of the pairs list:
-
-| Category | What it is | Share |
-|---|---|---|
-| Custom | Ordinary memecoins and established Solana tokens | ~85% |
-| xStock | Tokenized public-company stocks | ~5% |
-| Sunrise | A second tokenized-equity category | ~5% |
-| PreStock | Tokenized pre-IPO / private companies | ~1.5% |
-| Currency | Stablecoins and fiat-pegged tokens | ~1% |
-| Leverage, Collectibles, Solana, Tessera | Amplified-exposure tokens, tokenized collectibles, SOL and related core assets, and a second pre-IPO issuer | remainder |
-
-*Shares are a point-in-time snapshot, not a fixed split — they shift as the approved list grows.*
-
-Ordinary memecoins dominate the pairs list. The tokenized-equity categories combined are a small minority of what's actually launchable — the "trade against a stock" framing is a small slice of real usage.
+Ordinary memecoins dominate the pairs list; the tokenized-equity categories combined are a small minority of what's actually launchable. The full category breakdown — real examples, the two gates a pair has to clear, symbol collisions, and where pricing actually breaks — is its own page: [Quote Assets & Categories](how-it-works/quote-assets.md).
 
 ## Launch venues
 
