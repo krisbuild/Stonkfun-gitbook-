@@ -13,7 +13,7 @@ Creating a launch mints the token and sizes its curve in the same flow, priced a
 ***
 
 **01 Choose**
-Pick a quote asset from StonkFun's list of 450+ approved tokens, and a launch mode. Both are permanent.
+Pick a quote asset from StonkFun's approved list — 450+ at last count, and growing most days — and a launch mode. Both are permanent.
 
 **02 Price**
 The curve is sized in the quote asset itself, using its live USD price, so the launch is worth the same regardless of what it's priced against.
@@ -29,7 +29,7 @@ The pool goes live and every trade pays a fee from that point on.
 
 ***
 
-Each launch draws from a fixed list of quote assets, allows a dev buy of up to 50% of supply, and — if used — freezes any airdrop snapshot (also capped at 50% of supply, 1.5% per wallet) before the mint even exists.
+The approved list itself isn't static — StonkFun adds new quote assets on an ongoing basis, sometimes several in a single day. A token unavailable as a quote asset today can become one tomorrow; the list only grows. Each launch also allows a dev buy of up to 50% of supply, and — if used — freezes any airdrop snapshot (also capped at 50% of supply, 1.5% per wallet) before the mint even exists.
 
 {% hint style="info" %}
 **Launch protection.** The opening buy and pool creation are one atomic transaction, so there's no window between them for a bot to buy in ahead of the creator. And because the curve is priced from the quote asset's live rate, an asset the pricing service can't currently value will fail the launch before anything is signed — rather than launch at a wrong price.
@@ -43,7 +43,7 @@ Each launch draws from a fixed list of quote assets, allows a dev buy of up to 5
 | **Base API URL** | `https://www.stonkfun.xyz/api/public/v1` |
 | **API key** | None required — every endpoint is open, rate-limited per IP |
 | **Tokens launched** | 29,000+, growing at roughly 6–7 launches per minute |
-| **Quote assets** | 450+ across 9 categories |
+| **Quote assets** | 450+ across 9 categories, and growing — new assets are approved regularly |
 | **Graduation threshold** | $40,000 market cap (configured); tokens are flagged "about to graduate" at $32,000 |
 | **Platform token** | $STONK — fixed supply, mint and freeze authority both permanently revoked |
 
