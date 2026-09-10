@@ -40,9 +40,15 @@ At its core, StonkFun is three things stacked on top of each other:
 - **Standard tokens** carry no tax at all; the creator earns a share of trading fees instead.
 - **Reward tokens** pay holders automatically through a **Token-2022 transfer tax** — 1% or 3%, fixed permanently at launch — collected on every transfer, on any venue, not just trades on StonkFun. There's no creator fee position on a reward token at all.
 
+**Why a transfer tax, specifically.** Paying holders out of a *share of trading fees* has two structural weaknesses: the fee itself can be attached to a single pool, and anyone can spin up a competing pool for the same pair with a lower fee elsewhere — volume simply routes around it, and the reward stream dries up regardless of how well the token is doing. A **transfer tax avoids both problems by design**, because it's a property of the token's mint, not of any one pool. It fires on every transfer, on any venue, so there's no cheaper pool to route through and nothing for the reward mechanism to be undercut by.
+
+{% hint style="info" %}
+This also means the reward mechanism doesn't depend on a live price oracle to function — it's a flat percentage, applied at transfer time, regardless of what the token is worth. That matters in practice: pricing hundreds of different quote assets on-chain is genuinely hard, and [we've seen it fail directly](faq/README.md) — a specific quote token's pricing endpoint returning a persistent `service_unavailable` error while others worked fine. A tax that doesn't need a price lookup to apply doesn't share that failure mode.
+{% endhint %}
+
 **A front-runproof dev buy and airdrop.** A creator's opening buy is submitted in the same atomic bundle as the transaction that makes the pool tradeable — either the pool opens with the buy already filled, or the whole launch fails and nothing is charged. Airdrops work the same way: the recipient snapshot is frozen *before the mint even exists*, so nobody can see a new token coming and buy in early to qualify for the drop.
 
-**Two independent burn mechanisms, not one.** Platform trading-fee revenue funds a buyback-and-burn of $STONK (roughly 60% of revenue, historically). Separately, the **Ecosystem Flywheel** takes a slice of every reward-token's trading fees and uses it to buy back and burn the platform's own top 15 tokens by market cap, on a rolling basis — a mechanism most competing platforms don't have at all.
+**Two independent burn mechanisms, not one.** Platform trading-fee revenue funds a buyback-and-burn of $STONK (roughly 60% of revenue, historically). Separately, the **Ecosystem Flywheel** takes a slice of every reward-token's trading fees and uses it to buy back and burn the platform's own top 15 tokens by market cap, on a rolling basis.
 
 **$STONK was launched on StonkFun itself.** The platform's own token isn't a special pre-mine — it was created through the same standard-mode launch flow anyone can use, paired against SPYX (a tokenized S&P 500 index), with a fixed supply and both mint and freeze authority permanently revoked.
 
