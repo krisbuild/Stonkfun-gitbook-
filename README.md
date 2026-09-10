@@ -74,17 +74,13 @@ The list is spread across various categories:
 
 ### What it takes for a pair to be usable
 
-Clearing curation isn't the whole story — a pair has to clear three separate requirements before a launch against it will actually go through.
+Clearing curation isn't the whole story — a pair has to clear two separate requirements before a launch against it will actually go through.
 
 **First, the asset needs at least $50,000 in liquidity seeded on Raydium.** Below that threshold, a quote asset isn't eligible to be added to the list — a market that thin can't be priced or reliably traded against, so this comes before anything else is even considered.
 
-**Second, it has to be approved.** Clearing the liquidity bar makes a token *eligible* — it doesn't put it on the list automatically. Approval is a separate decision: StonkFun choosing that specific token for the list. That decision is exposed in the API as a single field, `launchable`. `true` means it's on the list and currently usable; `false` marks a retired pair — one that was approved at some point and has since been taken off the list. The Tessera duplicates covered above are exactly this case: approved once, then permanently switched off.
+**Second, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist. The API reports this as `launchLabReady`.
 
-So the sequence runs: eligible (clears the liquidity bar) → chosen (StonkFun approves it) → technically ready (Raydium has provisioned it on-chain, covered next). A token can clear the first and third and still never make the list, because the middle step is a deliberate choice, not an automatic pass.
-
-**Third, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Approval alone doesn't create this — Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist, independent of the approval decision itself. The API reports this as `launchLabReady`.
-
-A pair can clear approval without clearing provisioning: approved, but not yet ready on Raydium's side for LaunchLab specifically. In one snapshot, three approved pairs — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed and approved, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
+A pair can clear the liquidity bar and still not be usable on LaunchLab: liquid enough, but not yet provisioned on Raydium's side. In one snapshot, three pairs on the list — PENGUIN, PUMPCADE, and BURNIE — were caught exactly there: listed, but a LaunchLab launch against any of them would fail on-chain rather than at the API level.
 
 ### Symbols collide — match by mint address
 
