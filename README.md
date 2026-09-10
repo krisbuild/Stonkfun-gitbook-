@@ -61,19 +61,19 @@ Before building a launch, the API's own guidance is to call `/pairs` first: `quo
 
 The list is spread across various categories:
 
-| Category | Label shown | Count | Share | Examples |
-|---|---|---|---|---|
-| `custom` | Custom | 387 | ~85% | Ordinary memecoins and established Solana tokens |
-| `xstock` | xStock | 24 | ~5% | SPYX (S&P 500), NVDAX (NVIDIA), TSLAX (Tesla), GOOGLX (Google), COINX (Coinbase), MSTRX (MicroStrategy) |
-| `backpack` | **Sunrise** | 22 | ~5% | MU (Micron), TTWO (Take-Two), SNDK (SanDisk), NBIS, SILVER |
-| `prestock` | PreStock | 7 | ~1.5% | ANTHROPIC, ANDURIL, NEURALINK, POLYMARKET, FIGUREAI, OPENAI, KALSHI |
-| `currency` | Currency | 5 | ~1% | USDC, USDT, EURC, ONYC, JLUSDC |
-| `tessera` | Tessera | 2 | <1% | OPENAI, KALSHI |
-| `leverage` | Leverage | 2 | <1% | xSOL, XBTC |
-| `solana` | Solana | 2 | <1% | SOL (Wrapped), SKR |
-| `collectible` | Collectibles | 2 | <1% | SV151, HEEBOO |
+| Category | Label shown | Relative size | Examples |
+|---|---|---|---|
+| `custom` | Custom | The large majority | Ordinary memecoins and established Solana tokens |
+| `xstock` | xStock | A small share | SPYX (S&P 500), NVDAX (NVIDIA), TSLAX (Tesla), GOOGLX (Google), COINX (Coinbase), MSTRX (MicroStrategy) |
+| `backpack` | **Sunrise** | A small share | MU (Micron), TTWO (Take-Two), SNDK (SanDisk), NBIS, SILVER |
+| `prestock` | PreStock | A minor share | ANTHROPIC, ANDURIL, NEURALINK, POLYMARKET, FIGUREAI, OPENAI, KALSHI |
+| `currency` | Currency | A minor share | USDC, USDT, EURC, ONYC, JLUSDC |
+| `tessera` | Tessera | A minimal share | OPENAI, KALSHI |
+| `leverage` | Leverage | A minimal share | xSOL, XBTC |
+| `solana` | Solana | A minimal share | SOL (Wrapped), SKR |
+| `collectible` | Collectibles | A minimal share | SV151, HEEBOO |
 
-*Counts and shares are a point-in-time snapshot — the breakdown shifts as the list grows, so don't treat these as fixed.*
+*Ranked largest to smallest. The exact split shifts as the list grows, so it's shown by relative size rather than count.*
 
 Two details stand out. The category id and its display label don't always match: the API returns `backpack` as the raw category, but the site shows "Sunrise." And some symbols exist twice under different statuses — OPENAI and KALSHI each have a live entry under `prestock` and a retired one under `tessera`, showing StonkFun has consolidated categories over time rather than keeping every one live indefinitely.
 
