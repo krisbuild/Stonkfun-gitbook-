@@ -33,8 +33,6 @@ The pool goes live and every trade pays a fee from that point on.
 
 **The opening buy can't be front-run.** It's executed as the pool's literal first trade, bundled into the same atomic Jito bundle as the mint, pool and liquidity that make it tradeable at all — there is no block in which anyone else could trade ahead of it.
 
-**An airdrop can't be gamed.** When a launch carves out an airdrop, the recipient snapshot is taken and frozen immediately, then hashed into the signed quote before the mint is even public. Nobody can buy into the quote token afterward to qualify for a bigger share, and the recipient set can't be changed or redirected once it's set.
-
 **A launch that doesn't land doesn't charge.** If the bundle fails to land, the response comes back `service_unavailable` with nothing charged — the creator gets a fresh quote to retry, not a stuck payment. And because that quote is priced from the quote asset's live rate at signing time, an asset the pricing service can't currently value fails the launch before anything is signed, rather than launching at a wrong price.
 
 ## By the numbers

@@ -7,7 +7,7 @@
 * Launch Venues _(planned)_
 * Launch Modes & Fees _(planned)_
 * Quote Assets & Categories _(planned)_
-* Dev Buys & Airdrops _(planned)_
+* Dev Buys _(planned)_
 * Claiming Fees _(planned)_
 * Graduation _(planned)_
 * Revenue, Buybacks & the Flywheel _(planned)_
