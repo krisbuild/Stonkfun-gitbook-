@@ -22,14 +22,12 @@ The curve is sized in the quote asset itself, using its live USD price, so the l
 The creator signs a single fee payment from their own wallet. No account, no API key, nothing held in custody.
 
 **04 Land**
-The creator's opening buy, if any, is submitted as part of the same atomic Jito bundle as the payment, mint, pool and liquidity — everything lands together in a single block, or the whole launch fails with nothing charged.
+The creator's opening buy, if any, is submitted as part of the same atomic Jito bundle as the payment, mint, pool and liquidity — everything lands together in a single block, or the whole launch fails with nothing charged. A dev buy can claim up to 50% of supply; an airdrop snapshot, if used, is frozen before the mint even exists, capped the same way — 50% of supply, 1.5% per wallet.
 
 **05 Trade**
 The pool goes live and every trade pays a fee from that point on.
 
 ***
-
-The approved list itself isn't static — StonkFun adds new quote assets on an ongoing basis, sometimes several in a single day. A token unavailable as a quote asset today can become one tomorrow; the list only grows. Each launch also allows a dev buy of up to 50% of supply, and — if used — freezes any airdrop snapshot (also capped at 50% of supply, 1.5% per wallet) before the mint even exists.
 
 {% hint style="info" %}
 **Launch protection.** The opening buy, mint, pool and liquidity all land in one atomic Jito bundle, so there's no window between them for a bot to buy in ahead of the creator. And because the curve is priced from the quote asset's live rate, an asset the pricing service can't currently value will fail the launch before anything is signed — rather than launch at a wrong price.
