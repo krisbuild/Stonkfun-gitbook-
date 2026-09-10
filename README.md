@@ -47,7 +47,45 @@ The pool goes live and every trade pays a fee from that point on.
 | **Graduation threshold** | $40,000 market cap (configured); tokens are flagged "about to graduate" at $32,000 |
 | **Platform token** | $STONK — fixed supply, mint and freeze authority both permanently revoked |
 
-Ordinary memecoins dominate the pairs list; the tokenized-equity categories combined are a small minority of what's actually launchable. The full category breakdown — real examples, the two gates a pair has to clear, symbol collisions, and where pricing actually breaks — is its own page: [Quote Assets & Categories](how-it-works/quote-assets.md).
+## Quote Assets
+
+A quote asset is what a new token is priced against — the other side of the pair. This is StonkFun's central claim: it can be almost anything, not just SOL. Here's what the approved list actually contains, how it's organized, and where it breaks.
+
+### The list is curated, not open
+
+There is no way to add a quote asset yourself. Every asset on the list was added by StonkFun; a token you hold has no path onto the list just because you want to launch against it. The list isn't fixed — new assets are added on an ongoing basis — but growth only ever comes from StonkFun's side. Before building a launch, the API's own guidance is to call `/pairs` first: `quoteMint` must be one of the assets it returns.
+
+### The nine categories
+
+Based on a snapshot of the live `/pairs` response (453 quote assets, September 2026):
+
+| Category | Label shown | Count | Share | Examples |
+|---|---|---|---|---|
+| `custom` | Custom | 387 | ~85% | Ordinary memecoins and established Solana tokens |
+| `xstock` | xStock | 24 | ~5% | SPYX (S&P 500), NVDAX (NVIDIA), TSLAX (Tesla), GOOGLX (Google), COINX (Coinbase), MSTRX (MicroStrategy) |
+| `backpack` | **Sunrise** | 22 | ~5% | MU (Micron), TTWO (Take-Two), SNDK (SanDisk), NBIS, SILVER |
+| `prestock` | PreStock | 7 | ~1.5% | ANTHROPIC, ANDURIL, NEURALINK, POLYMARKET, FIGUREAI, OPENAI, KALSHI |
+| `currency` | Currency | 5 | ~1% | USDC, USDT, EURC, ONYC, JLUSDC |
+| `tessera` | Tessera | 2 | <1% | OPENAI, KALSHI |
+| `leverage` | Leverage | 2 | <1% | xSOL, XBTC |
+| `solana` | Solana | 2 | <1% | SOL (Wrapped), SKR |
+| `collectible` | Collectibles | 2 | <1% | SV151, HEEBOO |
+
+*Counts and shares are a point-in-time snapshot — the breakdown shifts as the list grows, so don't treat these as fixed.*
+
+Two things worth noticing in the raw data: the category id and its display label don't always match — the API returns `backpack` as the raw category, but the site shows "Sunrise" — and some symbols exist twice under different statuses: OPENAI and KALSHI each have a live entry under `prestock` and a retired one under `tessera`, evidence StonkFun has consolidated categories over time rather than keeping every one live forever.
+
+### The two gates a pair has to clear
+
+Two independent flags, and both have to be true for a launch to actually work. **`launchable`** is StonkFun's own rule — a retired pair reports `false` here permanently. **`launchLabReady`** is whether Raydium itself has created the on-chain `GlobalConfig` a LaunchLab launch needs against that asset. A pair can be approved by StonkFun and still not be LaunchLab-ready; constructing a launch against one of those fails on-chain, not at the API layer. Three `custom`-category pairs in the same snapshot (PENGUIN, PUMPCADE, BURNIE) were caught exactly in that gap.
+
+### Symbols collide — match by mint address
+
+Roughly 1 in 9 pairs shares its ticker symbol with at least one other — two different tokens both trade as `ALON`, `xBTC` and `WBTC` both describe wrapped Bitcoin from different bridges. Never resolve a quote asset by symbol; always use the mint address, or an integration will occasionally pick the wrong token.
+
+### Where pricing actually breaks
+
+Every quote asset needs a live, reliable USD price to size a launch's curve. Two real failure classes have shown up on the platform: **supply overflow**, where an asset's raw supply is large enough to push the derived raise past what the math can represent, rejecting the launch before anything is signed; and **per-asset pricing outages**, where the pricing service goes down for one specific asset while every other asset on the list keeps working normally. Both are asset-specific, not systemic.
 
 ## Launch venues
 

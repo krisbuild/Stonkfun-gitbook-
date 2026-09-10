@@ -6,7 +6,7 @@
 
 * Launch Venues _(planned)_
 * Launch Modes & Fees _(planned)_
-* [Quote Assets & Categories](how-it-works/quote-assets.md)
+* Quote Assets & Categories _(covered in Overview)_
 * Dev Buys _(planned)_
 * Claiming Fees _(planned)_
 * Graduation _(planned)_
