@@ -49,7 +49,7 @@ The pool goes live and every trade pays a fee from that point on.
 
 ## Quote Assets
 
-A quote asset is what a new token is priced against — the other side of the pair. This is StonkFun's central claim: it can be almost anything, not just SOL. Here's what the approved list actually contains, how it's organized, and where it breaks.
+A quote asset is what a new token is priced against — the other side of the pair, which can be almost anything, not just SOL.
 
 ### The list is curated, not open
 
