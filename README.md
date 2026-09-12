@@ -33,7 +33,9 @@ The pool goes live and every trade pays a fee from that point on.
 
 **The opening buy can't be front-run.** It's executed as the pool's literal first trade, bundled into the same atomic Jito bundle as the mint, pool and liquidity that make it tradeable at all — there is no block in which anyone else could trade ahead of it.
 
-**A launch that doesn't land doesn't charge.** If the bundle fails to land, the response comes back `service_unavailable` with nothing charged — the creator gets a fresh quote to retry, not a stuck payment. And because that quote is priced from the quote asset's live rate at signing time, an asset the pricing service can't currently value fails the launch before anything is signed, rather than launching at a wrong price.
+**A launch that doesn't land doesn't charge.** If the bundle fails to land, the response comes back `service_unavailable` with nothing charged — the creator gets a fresh quote to retry, not a stuck payment.
+
+**A bad quote asset is caught even earlier.** An ineligible or unusable quote asset is rejected at the very first step, before any transaction exists to sign — with a plain `invalid_request` error, not `service_unavailable`.
 
 ## Platform at a glance
 
@@ -82,7 +84,7 @@ Clearing curation isn't the whole story — a pair has to clear three separate r
 
 **Third, if the launch runs on LaunchLab, Raydium has to have separately provisioned that asset on-chain.** Raydium's own on-chain `GlobalConfig` for that specific quote asset has to already exist. The API reports this as `launchLabReady`.
 
-### Symbols collide — match by mint address
+### Identify by mint address, not symbol
 
 A ticker symbol (`SOL`, `ALON`, `USDC`) is just a label — nothing stops two different tokens from picking the same one. A mint address is the actual identifier: a long, unique string that can never collide.
 
@@ -93,12 +95,6 @@ If code looks up a quote asset by its symbol instead of its mint address, it can
 ### How pricing works
 
 Every quote asset is priced independently: its own live USD rate, converted using its own decimals, is what sizes a launch's curve. There's no single shared calculation across the list — each quote asset runs through this on its own, which is what lets StonkFun price a launch against anything from a stablecoin to a tokenized stock using the same underlying method.
-
-## Launch venue
-
-Every launch runs through LaunchLab. It costs network rent only (~0.012–0.013 SOL) — no platform fee. The token starts on a bonding curve with no upfront liquidity: it trades against that curve until enough of the quote asset has been raised, then graduates automatically into a real Raydium pool.
-
-A LaunchLab launch can also be built directly against Raydium's program without going through StonkFun's API at all — StonkFun scans the chain for pools carrying its platform id and adopts anything it finds within a minute or two.
 
 ## Launch modes
 
@@ -120,6 +116,44 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 | $125,000 – ~$50,000,000 | 0.1% of market cap |
 | $50,000,000+ | Capped at $50,000 |
 
+## Tokenomics
+
+| Field | Standard mode | Reward mode |
+|---|---|---|
+| **Starting supply** | 1,000,000,000 | 1,000,000,000 |
+| **Decimals** | 6 | 9 |
+| **Token standard** | SPL Token | Token-2022 |
+| **Mint authority** | Revoked | Revoked |
+| **Freeze authority** | Revoked | Revoked |
+| **Supply can increase** | No | No |
+| **Supply can decrease** | Yes — burns | Yes — burns |
+
+### $STONK is an exception to this, not an example of it
+
+| Field | $STONK |
+|---|---|
+| **Supply** | 852,067,953 |
+| **Decimals** | 9 |
+| **Token standard** | SPL Token (Standard mode) |
+| **Mint authority** | Revoked |
+| **Freeze authority** | Revoked |
+
+$STONK's supply and decimals don't match the Standard-mode pattern above — it should not be read as a typical example of one.
+
+## Launch venue
+
+Every launch runs through LaunchLab. It costs network rent plus a minimal platform fee. The token starts on a bonding curve with no upfront liquidity: it trades against that curve until enough of the quote asset has been raised, then graduates automatically into a real Raydium pool.
+
+A LaunchLab launch can also be built directly against Raydium's program without going through StonkFun's API at all — StonkFun scans the chain for pools carrying its platform id and adopts anything it finds within a minute or two.
+
+## Graduation
+
+Graduation is what happens once a bonding curve raises enough to stop being a bonding curve at all.
+
+Every LaunchLab token starts trading purely against its own curve, with no upfront liquidity. Once its market cap crosses **$40,000**, it graduates: the platform migrates it into a real Raydium pool. Tokens get flagged "about to graduate" earlier, at **$32,000**, as an early signal before it actually happens. Progress toward that threshold is tracked continuously — every token carries a live progress value between 0 and 1 showing exactly how close it is.
+
+Graduation is a real, permanent state change, not just a label. On-chain, the pool's own status flips the moment it happens — confirmed directly by comparing a still-bonding pool against a graduated one. The migration itself moves the curve's accumulated liquidity into a brand new Raydium pool, and the LP tokens that liquidity produces get locked permanently as part of that same step — not held by the creator, not held by the platform, not withdrawable by anyone, ever.
+
 ## Economics
 
 Platform revenue is quote-token trading fees claimed to the treasury. Fees paid directly to creators or to reward-token holders don't count toward this — those are claimed separately, straight from Raydium, and never touch the treasury at all.
@@ -136,11 +170,9 @@ $STONK itself isn't a special, separately-deployed asset — it went through Sto
 
 The Flywheel is a second, independent burn engine, and it doesn't touch the treasury above at all. Instead, it runs on a fixed 5% cut of trading fees taken directly from every Reward-mode pool — a stream the STONK buyback never sees.
 
-What it does with that revenue: it continuously buys back and burns whichever tokens currently sit in the platform's own top 15 by market cap, weighting each buyback by size — a bigger token in that top 15 gets a bigger share of every round. And it doesn't run occasionally; it ticks every few minutes, all day.
+What it does with that revenue: it continuously buys back and burns whichever tokens currently sit in the platform's own top 10 by market cap, weighting each buyback by size — a bigger token in that top 10 gets a bigger share of every round. And it doesn't run occasionally; it ticks every few minutes, all day.
 
-The ranking is alive, not fixed. A token only gets bought back while it's actually sitting inside that top 15. Fall out of it, and the Flywheel simply stops touching that token — but nothing about its history is lost. Climb back in later, and it picks up again exactly where it left off, as if it never left.
-
-Past these two engines, the platform separately tracks four smaller burn categories — Quote-revenue, Reward, Auto, and Kickstart — each with its own running total, though the exact trigger behind each one isn't spelled out anywhere public.
+The ranking is alive, not fixed. A token only gets bought back while it's actually sitting inside that top 10. Fall out of it, and the Flywheel simply stops touching that token — but nothing about its history is lost. Climb back in later, and it picks up again exactly where it left off, as if it never left.
 
 ### Reward-token payouts
 
@@ -148,12 +180,92 @@ This one doesn't draw from platform revenue at all. It's funded entirely by the 
 
 Once that tax starts accruing, one wallet — operated by StonkFun, and it alone — holds the authority to pull it out of every Reward mint on the platform. It harvests whatever's accrued, sells it on the open market for that token's own quote asset, and pays the proceeds out to holders in batches.
 
+## Launching Your First Token
+
+Quote asset and mode are already covered above — both are locked in the moment a launch is built. Name, symbol, logo, and a quote asset are all required; social links are optional, and skipping the website links the launch back to StonkFun by default.
+
+**Dev buy.** Optionally buy into your own launch as part of the same landing — a target share of supply, or a SOL amount, never both. The cap is 75% of supply. It executes as the pool's literal first trade, so there's no window for anyone else to trade ahead of it. On a non-SOL quote asset, the SOL cost is worked out against that asset's live market at build time; on a Reward launch, what actually lands in the wallet is net of the transfer tax.
+
+**Airdrop Mode (Reward launches only).** Optionally set aside a slice of supply — held out of the pool entirely — to distribute to existing holders of whatever asset is being paired against. The recipient list is built from that asset's own holder rankings (the top 100 by default), with exchange, custody, and program-owned wallets stripped out and backfilled so the drop still reaches its full size. That list is frozen the instant the launch is built — nobody can buy into the quote asset afterward hoping to catch the drop.
+
+Once signed, the payment, mint, pool, liquidity, and any dev buy all land together as one atomic bundle. If it lands, the token is tradable immediately. If it doesn't, nothing is charged.
+
+## Using the Public API
+
+Everything on StonkFun — every token, every launch, every burn — is readable through one open REST API. No account, no signup, and for reading data, no key at all.
+
+```
+Base URL: https://www.stonkfun.xyz/api/public/v1
+```
+
+Every response is JSON. Every error follows the same shape:
+
+```json
+{
+  "error": {
+    "code": "invalid_request",
+    "message": "…",
+    "retryable": false,
+    "retryAfterSeconds": null
+  }
+}
+```
+
+`code` is always one of: `invalid_request`, `forbidden`, `not_found`, `method_not_allowed`, `conflict`, `rate_limited`, `internal`, `service_unavailable`. Requests are rate-limited per IP; a `rate_limited` response carries `retryAfterSeconds` telling you exactly how long to wait.
+
+### Reading platform data
+
+**`GET /tokens`** — every token with a live pool, with market data attached. Search by name, symbol, or mint with `q`; filter by `mode`, `status`, `quoteMint`, or `category`; sort with `sort` (defaults to market cap). Paginated with `page` and `pageSize` (up to 100 per page).
+
+**`GET /tokens/{mint}`** — the same market data for one token, plus its original launch record.
+
+**`GET /pairs`** — the full list of quote assets a launch can be built against. This is the one endpoint to check before building a launch: `quoteMint` has to be something this returns. Filter with `launchable` (excludes retired assets) or `launchLabReady` (only assets Raydium has actually provisioned on-chain).
+
+**`GET /launches`** — the launch ledger, newest first. Filter by `creator` to pull up everything one wallet has launched, or by `mode`. Launches built directly against the chain, without going through this API at all, show up here too once adopted, under `launchpad: "launchlab"`.
+
+**`GET /stats`** — aggregate platform totals, plus the config flags a client actually needs: `config.paidLaunchesEnabled` and `config.launchLabEnabled` say which launch path is currently live. Worth checking before showing a "Launch" button at all.
+
+**`GET /revenue`** — fee revenue, buybacks, and burns.
+
+**`GET /revenue/history`** — the whole daily revenue history in one call, keyed by UTC day. No date-range parameters by design — fetch it once and index it locally rather than re-querying by date.
+
+### Reading one token in depth
+
+A handful of endpoints go deeper than what `/tokens/{mint}` returns:
+
+**`GET /tokens/{mint}/burns`** — totals and recent burns of this specific token by the platform's fee sweep.
+
+**`GET /tokens/{mint}/rewards`** — for a Reward-mode token, lifetime payout totals and holder count. Standard-mode tokens answer with `mode: "standard"` and a null rewards object — not an error, just nothing to report.
+
+**`GET /tokens/{mint}/airdrop`** — the airdrop a token launched with, if it had one. This reads the frozen snapshot taken at launch time, not a live balance scan, so it reflects exactly what was actually paid for. Most tokens have no airdrop at all, which comes back as `airdrop: null`.
+
+**`GET /tokens/{mint}/backing`** — USD value permanently locked behind a token. This doesn't apply to any current launches — calling it on a real token returns `400 invalid_request` rather than a zero, since the concept doesn't apply to how tokens are launched today.
+
+**`GET /tokens/{mint}/fees`** — trading fees a creator can currently claim, without needing a connected wallet to ask. Whether anything is claimable, and why, depends entirely on how the token was launched: a Standard-mode LaunchLab launch has its creator share forwarded automatically, so there's nothing to claim by signature at all; a Reward-mode launch pays holders through the transfer tax instead and gives its creator nothing. Both cases answer `claimable: null` with a reason, not an error.
+
+### Launching a token
+
+**`POST /launches/prepare`** — validates everything and returns a signed quote plus an unsigned payment transaction.
+
+**`POST /launches/submit`** — takes the signed transaction back and lands the whole launch as one atomic bundle.
+
+**`GET /launches/{paymentSignature}`** — poll this if `/submit` came back `processing`, until it flips to `completed`.
+
+## Network & Program IDs
+
+| Field | Value |
+|---|---|
+| **Network** | Solana (mainnet-beta) |
+| **LaunchLab program** (bonding curve, every launch) | `LanMV9sAd7wArD4vJFi2qDdfnVhFxYSUg6eADduJ3uj` |
+| **Raydium CPMM program** (graduation destination) | `CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C` |
+| **SPL Token program** (Standard-mode mints) | `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` |
+| **Token-2022 program** (Reward-mode mints) | `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` |
+| **StonkFun platform config — Standard** | `4E876qZTE9FJMrBzgVtBrSrzz2TLivB5Y5QXPjB4gZL7` |
+| **StonkFun platform config — Reward** | `6BwHHDg3u1854jC8PDLXvR4spTcLNaoBxLJNGC4nTESt` |
+| **Reward-tax withdraw authority** | `5KXDF6QnqhBj72hDtJNkkpFaQVUfbFXNybMsp3DiK6tD` |
+
+Every value here is live and verifiable — the LaunchLab and platform config IDs come straight from `GET /launchlab/pricing`, and the withdraw authority is the wallet actually observed on-chain harvesting transfer tax from Reward-mode mints.
+
 ## What StonkFun is not
 
 StonkFun does not vet, audit, or endorse tokens launched on it. A tokenized-stock pairing does not make a token a stock, a derivative of stock, or an investment product — it only describes what the token trades against. Distributions to reward-token holders are a mechanical property of the token, not a dividend or yield.
-
-## Next
-
-- [How StonkFun Works](how-it-works/README.md) — launch venues, launch modes, fees, and economics in full detail
-- [Getting Started](getting-started/README.md) — launching a first token
-- [FAQ & Troubleshooting](faq/README.md) — common questions and error messages

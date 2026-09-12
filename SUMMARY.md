@@ -2,24 +2,22 @@
 
 * [Overview](README.md)
 
-## How StonkFun Works
+## Protocol
 
-* Launch Venues _(planned)_
-* Launch Modes & Fees _(planned)_
-* Quote Assets & Categories _(covered in Overview)_
-* Dev Buys _(planned)_
-* Claiming Fees _(planned)_
-* Graduation _(planned)_
-* Revenue, Buybacks & the Flywheel _(planned)_
+* [How Launches Work](README.md#how-launches-work)
+* [Quote Assets & Categories](README.md#quote-assets)
+* [Launch Modes & Fees](README.md#launch-modes)
+* [Tokenomics](README.md#tokenomics)
+* [Graduation](README.md#graduation)
+* [Economics: Buybacks & the Flywheel](README.md#economics)
+* [What StonkFun Is Not](README.md#what-stonkfun-is-not)
 
 ## Getting Started
 
-* Launching Your First Token _(planned)_
-* Building It Yourself (Advanced) _(planned)_
-* Using the Public API _(planned)_
+* [Launching Your First Token](README.md#launching-your-first-token)
 
-## FAQ & Troubleshooting
+## Integration
 
-* Glossary _(planned)_
-* Common Questions _(planned)_
-* Error Messages Explained _(planned)_
+* [Using the Public API](README.md#using-the-public-api)
+* [Network & Program IDs](README.md#network-program-ids)
+* FAQ & Troubleshooting _(planned)_
