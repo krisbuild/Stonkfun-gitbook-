@@ -124,24 +124,13 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 
 Platform revenue is quote-token trading fees claimed to the treasury — this excludes fees paid directly to creators or reward-token holders, which are claimed separately, straight from Raydium.
 
-That treasury has taken in **$10.29M** in total revenue to date. **59.4%** of it — **$6.12M** — has gone to buying back and burning $STONK; the remaining 40.6% is kept as protocol revenue. One exception: when a launch is quoted against $STONK itself, there's no open-market purchase step — the fee is already in $STONK, so it's burned directly instead of bought back first.
+Most of that treasury goes toward buying $STONK back on the open market and burning it; the rest is kept as protocol revenue. One exception: when a launch is quoted against $STONK itself, there's no open-market purchase step — the fee is already in $STONK, so it's burned directly instead of bought back first.
 
 $STONK itself was launched through StonkFun's own Standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
 
 A second, separate mechanism — the **Ecosystem Flywheel** — draws from reward-token trading fees rather than the treasury above, and continuously buys back and burns the platform's own top 15 tokens by market cap.
 
-Across both of these and four smaller categories, the platform has burned **$7.07M** in total value across **45,980** separate burns:
-
-| Source | Value burned |
-|---|---|
-| $STONK buyback | $6.07M |
-| Quote-revenue | $404K |
-| Reward | $310K |
-| Ecosystem Flywheel | $215K |
-| Auto | $66K |
-| Kickstart | $869 |
-
-The API reports all six by name and running total; beyond buyback and Flywheel, it doesn't document what Quote-revenue, Reward, Auto, or Kickstart burns specifically do.
+Beyond these two, the platform tracks four more burn categories under its own names: Quote-revenue, Reward, Auto, and Kickstart. The API reports each by name and running total, but doesn't document what they specifically do beyond that.
 
 Reward-token payouts are funded by a third, unrelated mechanism: the transfer tax itself. A single wallet operated by StonkFun holds the authority to withdraw accrued tax from every Reward mint on the platform; it harvests, sells into the quote asset, and batches the proceeds out to holders.
 
