@@ -128,7 +128,9 @@ Most of that treasury goes toward buying $STONK back on the open market and burn
 
 $STONK itself was launched through StonkFun's own Standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
 
-A second, separate mechanism — the **Ecosystem Flywheel** — draws from reward-token trading fees rather than the treasury above, and continuously buys back and burns the platform's own top 15 tokens by market cap.
+### Ecosystem Flywheel
+
+A second, separate mechanism draws from reward-token trading fees rather than the treasury above, and continuously buys back and burns the platform's own top 15 tokens by market cap.
 
 Beyond these two, the platform tracks four more burn categories under its own names: Quote-revenue, Reward, Auto, and Kickstart. The API reports each by name and running total, but doesn't document what they specifically do beyond that.
 
