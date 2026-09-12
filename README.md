@@ -122,14 +122,28 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 
 ## Economics
 
-Platform trading-fee revenue funds two independent burn mechanisms, not one:
+Platform revenue is quote-token trading fees claimed to the treasury — this excludes fees paid directly to creators or reward-token holders, which are claimed separately, straight from Raydium.
 
-- A **buyback-and-burn of $STONK**, historically around 60% of platform revenue, with the remainder retained.
-- The **Ecosystem Flywheel**, funded separately from reward-token trading fees, which continuously buys back and burns the platform's own top 15 tokens by market cap.
+That treasury has taken in **$10.29M** in total revenue to date. **59.4%** of it — **$6.12M** — has gone to buying back and burning $STONK; the remaining 40.6% is kept as protocol revenue.
 
-$STONK itself was launched through StonkFun's own standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
+$STONK itself was launched through StonkFun's own Standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
 
-Reward-token payouts are funded by a third source again: the transfer tax itself, not trading-fee revenue. A single wallet operated by StonkFun holds the authority to withdraw accrued tax from every Reward mint on the platform; it harvests, sells into the quote asset, and batches the proceeds out to holders.
+A second, separate mechanism — the **Ecosystem Flywheel** — draws from reward-token trading fees rather than the treasury above, and continuously buys back and burns the platform's own top 15 tokens by market cap.
+
+Across both of these and four smaller categories, the platform has burned **$7.07M** in total value across **45,980** separate burns:
+
+| Source | Value burned |
+|---|---|
+| $STONK buyback | $6.07M |
+| Quote-revenue | $404K |
+| Reward | $310K |
+| Ecosystem Flywheel | $215K |
+| Auto | $66K |
+| Kickstart | $869 |
+
+The API reports all six by name and running total; beyond buyback and Flywheel, it doesn't document what Quote-revenue, Reward, Auto, or Kickstart burns specifically do.
+
+Reward-token payouts are funded by a third, unrelated mechanism: the transfer tax itself. A single wallet operated by StonkFun holds the authority to withdraw accrued tax from every Reward mint on the platform; it harvests, sells into the quote asset, and batches the proceeds out to holders.
 
 ## What StonkFun is not
 
