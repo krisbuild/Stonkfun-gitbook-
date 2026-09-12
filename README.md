@@ -124,7 +124,7 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 
 Platform revenue is quote-token trading fees claimed to the treasury — this excludes fees paid directly to creators or reward-token holders, which are claimed separately, straight from Raydium.
 
-That treasury has taken in **$10.29M** in total revenue to date. **59.4%** of it — **$6.12M** — has gone to buying back and burning $STONK; the remaining 40.6% is kept as protocol revenue.
+That treasury has taken in **$10.29M** in total revenue to date. **59.4%** of it — **$6.12M** — has gone to buying back and burning $STONK; the remaining 40.6% is kept as protocol revenue. One exception: when a launch is quoted against $STONK itself, there's no open-market purchase step — the fee is already in $STONK, so it's burned directly instead of bought back first.
 
 $STONK itself was launched through StonkFun's own Standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
 
