@@ -118,6 +118,8 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 
 ## Tokenomics
 
+Every launch's tokenomics lock in automatically the moment it's created — supply is set and both mint and freeze authority are burned in that same instant, with no manual step afterward. From there, supply can only move one way: down, through ongoing burns like the Ecosystem Flywheel.
+
 | Field | Standard mode | Reward mode |
 |---|---|---|
 | **Starting supply** | 1,000,000,000 | 1,000,000,000 |
@@ -127,18 +129,6 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 | **Freeze authority** | Revoked | Revoked |
 | **Supply can increase** | No | No |
 | **Supply can decrease** | Yes — burns | Yes — burns |
-
-### $STONK is an exception to this, not an example of it
-
-| Field | $STONK |
-|---|---|
-| **Supply** | 852,067,953 |
-| **Decimals** | 9 |
-| **Token standard** | SPL Token (Standard mode) |
-| **Mint authority** | Revoked |
-| **Freeze authority** | Revoked |
-
-$STONK's supply and decimals don't match the Standard-mode pattern above — it should not be read as a typical example of one.
 
 ## Launch venue
 
