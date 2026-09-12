@@ -122,19 +122,31 @@ Tax doesn't distribute on every individual transfer — it accrues into a pot un
 
 ## Economics
 
-Platform revenue is quote-token trading fees claimed to the treasury — this excludes fees paid directly to creators or reward-token holders, which are claimed separately, straight from Raydium.
+Platform revenue is quote-token trading fees claimed to the treasury. Fees paid directly to creators or to reward-token holders don't count toward this — those are claimed separately, straight from Raydium, and never touch the treasury at all.
 
-Most of that treasury goes toward buying $STONK back on the open market and burning it; the rest is kept as protocol revenue. One exception: when a launch is quoted against $STONK itself, there's no open-market purchase step — the fee is already in $STONK, so it's burned directly instead of bought back first.
+### $STONK buyback and burn
 
-$STONK itself was launched through StonkFun's own Standard-mode flow, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed, and both mint and freeze authority are permanently revoked.
+Most of that treasury goes toward one thing: buying $STONK back on the open market and burning it permanently. What's left over is kept as protocol revenue.
+
+There's one clean exception to the buy-then-burn pattern. When a launch happens to be quoted against $STONK itself, there's no open-market purchase to make — the fee already arrives in $STONK — so it skips straight to burning instead of buying first.
+
+$STONK itself isn't a special, separately-deployed asset — it went through StonkFun's own Standard-mode launch flow like anything else, paired against SPYX (a tokenized S&P 500 index) rather than SOL. Its supply is fixed permanently, and both its mint and freeze authority have been revoked for good — nobody can create more of it, and nobody can freeze anyone's holdings, StonkFun included.
 
 ### Ecosystem Flywheel
 
-A second, separate mechanism draws from reward-token trading fees rather than the treasury above, and continuously buys back and burns the platform's own top 15 tokens by market cap.
+The Flywheel is a second, independent burn engine, and it doesn't touch the treasury above at all. Instead, it runs on a fixed 5% cut of trading fees taken directly from every Reward-mode pool — a stream the STONK buyback never sees.
 
-Beyond these two, the platform tracks four more burn categories under its own names: Quote-revenue, Reward, Auto, and Kickstart. The API reports each by name and running total, but doesn't document what they specifically do beyond that.
+What it does with that revenue: it continuously buys back and burns whichever tokens currently sit in the platform's own top 15 by market cap, weighting each buyback by size — a bigger token in that top 15 gets a bigger share of every round. And it doesn't run occasionally; it ticks every few minutes, all day.
 
-Reward-token payouts are funded by a third, unrelated mechanism: the transfer tax itself. A single wallet operated by StonkFun holds the authority to withdraw accrued tax from every Reward mint on the platform; it harvests, sells into the quote asset, and batches the proceeds out to holders.
+The ranking is alive, not fixed. A token only gets bought back while it's actually sitting inside that top 15. Fall out of it, and the Flywheel simply stops touching that token — but nothing about its history is lost. Climb back in later, and it picks up again exactly where it left off, as if it never left.
+
+Past these two engines, the platform separately tracks four smaller burn categories — Quote-revenue, Reward, Auto, and Kickstart — each with its own running total, though the exact trigger behind each one isn't spelled out anywhere public.
+
+### Reward-token payouts
+
+This one doesn't draw from platform revenue at all. It's funded entirely by the token's own transfer tax — and critically, that tax rate isn't something StonkFun sets or imposes. It's a choice the creator makes at the moment of launch: 1% or 3%, locked in permanently the instant the token exists. Pick reward mode, and you're deciding right then how hard that token will tax its own transfers to pay its holders.
+
+Once that tax starts accruing, one wallet — operated by StonkFun, and it alone — holds the authority to pull it out of every Reward mint on the platform. It harvests whatever's accrued, sells it on the open market for that token's own quote asset, and pays the proceeds out to holders in batches.
 
 ## What StonkFun is not
 
