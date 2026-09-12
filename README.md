@@ -94,22 +94,17 @@ If code looks up a quote asset by its symbol instead of its mint address, it can
 
 Every quote asset is priced independently: its own live USD rate, converted using its own decimals, is what sizes a launch's curve. There's no single shared calculation across the list — each quote asset runs through this on its own, which is what lets StonkFun price a launch against anything from a stablecoin to a tokenized stock using the same underlying method.
 
-## Launch venues
+## Launch venue
 
-| | Raydium CLMM | LaunchLab |
-|---|---|---|
-| **Cost** | A flat SOL fee, shown live before signing | Network rent only (~0.012–0.013 SOL) — no platform fee |
-| **Liquidity model** | Locked position from launch | Bonding curve, no upfront liquidity, graduates into a Raydium pool |
-| **Requires StonkFun's API** | Yes | No — a transaction built directly against Raydium's program is adopted automatically within a minute or two |
-| **Fee claiming** | Fee Key NFT + manual claim | Forwarded automatically, nothing to claim |
+Every launch runs through LaunchLab. It costs network rent only (~0.012–0.013 SOL) — no platform fee. The token starts on a bonding curve with no upfront liquidity: it trades against that curve until enough of the quote asset has been raised, then graduates automatically into a real Raydium pool.
 
-Where there is something to claim, the claim is only valid when signed by the wallet that owns the position. A claim transaction prepared for a token you do not own cannot be used.
+A LaunchLab launch can also be built directly against Raydium's program without going through StonkFun's API at all — StonkFun scans the chain for pools carrying its platform id and adopts anything it finds within a minute or two.
 
 ## Launch modes
 
-Every launch is either **Standard** or **Reward**, independent of which venue it runs through.
+Every launch is either **Standard** or **Reward**.
 
-**Standard tokens** carry no tax. The creator earns a share of trading fees instead. On LaunchLab, the total trading fee is 1.25% — 0.25% to Raydium's own protocol fee, 1% collected by StonkFun, half of which (0.5%) is forwarded to the creator automatically. On the paid Raydium path, the creator chooses a 1% pool (50/50 split) or a 2% pool (75% to the creator) at launch, permanently.
+**Standard tokens** carry no tax. The creator earns a share of trading fees instead — the total trading fee is 1.25%: 0.25% to Raydium's own protocol fee, 1% collected by StonkFun, half of which (0.5%) is forwarded to the creator automatically.
 
 **Reward tokens** pay holders through a Token-2022 transfer tax — 1% or 3%, fixed permanently at launch — collected on every transfer, on any venue, not just trades on StonkFun. Reward tokens have no creator fee position at all.
 
